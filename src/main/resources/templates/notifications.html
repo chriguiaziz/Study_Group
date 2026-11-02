@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('Notifications')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<div class="app-shell">
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+    <main class="page">
+        <section class="page-title">
+            <span class="badge orange">Activity center</span>
+            <h1>Notifications</h1>
+            <p>Track group invitations, messages, resource sharing, and study activity.</p>
+        </section>
+        <section class="card">
+            <div th:each="notification : ${notifications}" class="notification-row">
+                <div>
+                    <span class="badge" th:text="${notification.type}">TYPE</span>
+                    <h3 th:text="${notification.title}">Title</h3>
+                    <p class="muted" th:text="${notification.body}">Body</p>
+                    <a th:if="${notification.group != null}" class="button secondary" th:href="@{/groups/{id}(id=${notification.group.id})}">Open group</a>
+                </div>
+                <form th:if="${!notification.readStatus}" th:action="@{/notifications/{id}/read(id=${notification.id})}" method="post">
+                    <button class="button secondary" type="submit">Mark read</button>
+                </form>
+                <span class="badge green" th:if="${notification.readStatus}">Read</span>
+            </div>
+            <div class="empty-state" th:if="${notifications.isEmpty()}">No notifications yet.</div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

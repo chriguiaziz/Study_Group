@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('About')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<main class="page">
+    <section class="page-title">
+        <span class="badge green">University project</span>
+        <h1>About StudyGroup</h1>
+        <p>StudyGroup is a Spring Boot MVC application built to demonstrate object-oriented programming, relational database design, and modern user interface design.</p>
+    </section>
+    <section class="grid">
+        <article class="card">
+            <h2>OOP Concepts</h2>
+            <p class="muted">Abstract base entities, a profiled user superclass, polymorphic learning resources, reusable service contracts, method overriding, and method overloading.</p>
+        </article>
+        <article class="card">
+            <h2>Architecture</h2>
+            <p class="muted">Clean packages for controllers, services, repositories, DTOs, models, enums, configuration, web helpers, and utilities.</p>
+        </article>
+        <article class="card">
+            <h2>Features</h2>
+            <p class="muted">Registration, login, dashboard, CRUD groups, join/leave, chat, shared resources, notifications, profiles, settings, search, and responsive pages.</p>
+        </article>
+    </section>
+</main>
+</body>
+</html>

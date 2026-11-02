@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('Login')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<main class="auth-page">
+    <section class="card auth-card">
+        <span class="badge">Welcome back</span>
+        <h1>Login</h1>
+        <p class="muted">Use a registered account or demo user `lina@student.edu` with password `1234` after the database seed runs.</p>
+        <p class="error" th:if="${authError}" th:text="${authError}">Error</p>
+        <form th:action="@{/login}" th:object="${loginForm}" method="post">
+            <div class="field">
+                <label for="email">Email</label>
+                <input id="email" type="email" th:field="*{email}" placeholder="student@university.edu">
+                <span class="error" th:errors="*{email}"></span>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input id="password" type="password" th:field="*{password}" placeholder="Your password">
+                <span class="error" th:errors="*{password}"></span>
+            </div>
+            <button class="button" type="submit">Login</button>
+            <a class="button secondary" th:href="@{/register}">Create account</a>
+        </form>
+    </section>
+</main>
+</body>
+</html>

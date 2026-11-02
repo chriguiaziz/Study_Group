@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="topbar" class="topbar">
+    <a class="brand" th:href="@{/}">
+        <span class="brand-mark">S</span>
+        <span>StudyGroup</span>
+    </a>
+    <nav class="nav-links">
+        <a th:href="@{/groups}">Groups</a>
+        <a th:href="@{/search}">Search</a>
+        <a th:href="@{/about}">About</a>
+        <a class="always" th:if="${currentUser == null}" th:href="@{/login}">Login</a>
+        <a class="always button" th:if="${currentUser == null}" th:href="@{/register}">Register</a>
+        <a th:if="${currentUser != null}" th:href="@{/notifications}">
+            Notifications <span class="badge" th:if="${unreadCount > 0}" th:text="${unreadCount}">0</span>
+        </a>
+        <a class="always" th:if="${currentUser != null}" th:href="@{/dashboard}" th:text="${currentUser.initials}">ME</a>
+        <form th:if="${currentUser != null}" th:action="@{/logout}" method="post">
+            <button class="ghost-button" type="submit">Logout</button>
+        </form>
+    </nav>
+</div>
+
+<aside th:fragment="sidebar" class="sidebar">
+    <a th:href="@{/dashboard}"><span data-lucide="layout-dashboard"></span>Dashboard</a>
+    <a th:href="@{/groups}"><span data-lucide="users"></span>Explore Groups</a>
+    <a th:href="@{/groups/new}"><span data-lucide="plus-circle"></span>Create group</a>
+    <a th:href="@{/search}"><span data-lucide="search"></span>Search</a>
+    <a th:href="@{/notifications}"><span data-lucide="bell"></span>Notifications</a>
+    <a th:href="@{/profile}"><span data-lucide="user"></span>Profile</a>
+    <a th:href="@{/settings}"><span data-lucide="settings"></span>Settings</a>
+</aside>
+
+<th:block th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' | StudyGroup'">StudyGroup</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('Profile')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<div class="app-shell">
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+    <main class="page wide-page">
+        <section class="card profile-header">
+            <span class="avatar" th:text="${profileUser.initials}">U</span>
+            <div>
+                <span class="badge green" th:text="${profileUser.role}">STUDENT</span>
+                <h1 th:text="${profileUser.fullName}">Student</h1>
+                <p class="muted" th:text="${profileUser.email}">email</p>
+                <p th:if="${profileUser.bio}" th:text="${profileUser.bio}">Bio</p>
+                <div class="actions">
+                    <span class="badge" th:if="${profileUser.university}" th:text="${profileUser.university}">University</span>
+                    <span class="badge orange" th:if="${profileUser.major}" th:text="${profileUser.major}">Major</span>
+                    <a class="button secondary" th:if="${currentUser != null and currentUser.id == profileUser.id}" th:href="@{/settings}">Edit profile</a>
+                </div>
+            </div>
+        </section>
+
+        <section style="margin-top: 22px;">
+            <div class="toolbar">
+                <h2>Joined groups</h2>
+                <a class="button secondary" th:href="@{/groups}">Browse groups</a>
+            </div>
+            <div class="grid" th:if="${!groups.isEmpty()}">
+                <article class="card group-card" th:each="group : ${groups}">
+                    <span class="badge" th:text="${group.category.name}">Category</span>
+                    <h3 th:text="${group.name}">Group</h3>
+                    <p th:text="${group.description}">Description</p>
+                    <a class="button secondary" th:href="@{/groups/{id}(id=${group.id})}">Open</a>
+                </article>
+            </div>
+            <div class="empty-state" th:if="${groups.isEmpty()}">No joined groups yet.</div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

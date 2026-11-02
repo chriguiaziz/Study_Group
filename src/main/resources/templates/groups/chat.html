@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('Chat')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<div class="app-shell">
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+    <main class="page">
+        <section class="card">
+            <div class="toolbar">
+                <div>
+                    <span class="badge" th:text="${group.category.name}">Category</span>
+                    <h1 th:text="${group.name} + ' Chat'">Chat</h1>
+                </div>
+                <a class="button secondary" th:href="@{/groups/{id}(id=${group.id})}">Group details</a>
+            </div>
+            <div class="message-list">
+                <div class="message" th:each="message : ${messages}">
+                    <span class="avatar" th:text="${message.sender.initials}">A</span>
+                    <div>
+                        <strong th:text="${message.sender.displayName}">Sender</strong>
+                        <p th:text="${message.content}">Content</p>
+                    </div>
+                </div>
+                <div class="empty-state" th:if="${messages.isEmpty()}">Start the first discussion.</div>
+            </div>
+            <form th:action="@{/groups/{id}/messages(id=${group.id})}" th:object="${messageForm}" method="post" style="margin-top: 18px;">
+                <div class="field">
+                    <label for="content">Message</label>
+                    <textarea id="content" th:field="*{content}" placeholder="Ask a question, share an update, or plan the next session."></textarea>
+                </div>
+                <button class="button" type="submit">Send message</button>
+            </form>
+        </section>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('Search')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<div class="app-shell">
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+    <main class="page wide-page">
+        <section class="page-title">
+            <span class="badge">Global search</span>
+            <h1>Find People and Groups</h1>
+            <p>Search students, subjects, and group descriptions.</p>
+        </section>
+        <section class="card">
+            <form th:action="@{/search}" method="get">
+                <input name="q" th:value="${q}" placeholder="Search groups or students">
+                <button class="button" type="submit">Search</button>
+            </form>
+        </section>
+        <section class="split" style="margin-top: 20px;">
+            <div>
+                <h2>Groups</h2>
+                <div class="grid two" th:if="${!groups.isEmpty()}">
+                    <article class="card group-card" th:each="group : ${groups}">
+                        <span class="badge" th:text="${group.category.name}">Category</span>
+                        <h3 th:text="${group.name}">Group</h3>
+                        <p th:text="${group.description}">Description</p>
+                        <a class="button secondary" th:href="@{/groups/{id}(id=${group.id})}">Open</a>
+                    </article>
+                </div>
+                <div class="empty-state" th:if="${groups.isEmpty()}">No groups found.</div>
+            </div>
+            <aside>
+                <h2>Students</h2>
+                <div class="card">
+                    <div class="resource-row" th:each="user : ${users}">
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <span class="avatar" th:text="${user.initials}">U</span>
+                            <div>
+                                <strong th:text="${user.fullName}">Name</strong>
+                                <p class="muted" th:text="${user.major}">Major</p>
+                            </div>
+                        </div>
+                        <a class="button secondary" th:href="@{/profile/{id}(id=${user.id})}">View</a>
+                    </div>
+                    <div class="empty-state" th:if="${users.isEmpty()}">No students found.</div>
+                </div>
+            </aside>
+        </section>
+    </main>
+</div>
+</body>
+</html>

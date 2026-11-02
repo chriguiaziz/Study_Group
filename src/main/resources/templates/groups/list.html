@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('Explore Groups')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<div class="app-shell">
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+    <main class="page wide-page">
+        <section class="toolbar">
+            <div class="page-title">
+                <span class="badge">Browse</span>
+                <h1>Explore Groups</h1>
+                <p>Search by subject, topic, or group name and join the right session.</p>
+            </div>
+            <a class="button" th:href="@{/groups/new}"><span data-lucide="plus"></span>Create group</a>
+        </section>
+
+        <section class="card">
+            <form th:action="@{/groups}" method="get">
+                <input name="q" th:value="${q}" placeholder="Search algorithms, SQL, machine learning...">
+                <select name="category">
+                    <option value="">All categories</option>
+                    <option th:each="cat : ${categories}" th:value="${cat.id}" th:selected="${selectedCategory == cat.id}" th:text="${cat.name}">Category</option>
+                </select>
+                <button class="button" type="submit">Filter</button>
+            </form>
+        </section>
+
+        <section class="grid" style="margin-top: 20px;" th:if="${!groups.isEmpty()}">
+            <article class="card group-card" th:each="group : ${groups}">
+                <div class="toolbar">
+                    <span class="badge" th:text="${group.category.name}">Category</span>
+                    <span class="badge green" th:text="${group.priceLabel()}">Free</span>
+                </div>
+                <h3 th:text="${group.name}">Group</h3>
+                <p th:text="${group.description}">Description</p>
+                <div class="muted">
+                    <span th:text="${group.format}">HYBRID</span>
+                    <span> / </span>
+                    <span th:text="${group.activeMemberCount} + '/' + ${group.capacity} + ' members'">0 members</span>
+                </div>
+                <div class="actions">
+                    <a class="button secondary" th:href="@{/groups/{id}(id=${group.id})}">Details</a>
+                    <a class="button secondary" th:href="@{/groups/{id}/chat(id=${group.id})}">Chat</a>
+                </div>
+            </article>
+        </section>
+        <div class="empty-state" style="margin-top: 20px;" th:if="${groups.isEmpty()}">No groups matched your search.</div>
+    </main>
+</div>
+</body>
+</html>

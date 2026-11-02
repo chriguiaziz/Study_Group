@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('Register')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<main class="auth-page">
+    <section class="card auth-card">
+        <span class="badge green">New student</span>
+        <h1>Create account</h1>
+        <p class="muted">Join groups, share resources, and keep track of your collaborative learning.</p>
+        <p class="error" th:if="${authError}" th:text="${authError}">Error</p>
+        <form th:action="@{/register}" th:object="${registerForm}" method="post">
+            <div class="field">
+                <label for="fullName">Full name</label>
+                <input id="fullName" th:field="*{fullName}" placeholder="Maya Chen">
+                <span class="error" th:errors="*{fullName}"></span>
+            </div>
+            <div class="field">
+                <label for="email">Email</label>
+                <input id="email" type="email" th:field="*{email}" placeholder="student@university.edu">
+                <span class="error" th:errors="*{email}"></span>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input id="password" type="password" th:field="*{password}">
+                <span class="error" th:errors="*{password}"></span>
+            </div>
+            <div class="field">
+                <label for="university">University</label>
+                <input id="university" th:field="*{university}" placeholder="North Campus University">
+            </div>
+            <div class="field">
+                <label for="major">Major</label>
+                <input id="major" th:field="*{major}" placeholder="Computer Science">
+            </div>
+            <button class="button" type="submit">Register</button>
+            <a class="button secondary" th:href="@{/login}">I have an account</a>
+        </form>
+    </section>
+</main>
+</body>
+</html>

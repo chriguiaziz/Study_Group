@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('Settings')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<div class="app-shell">
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+    <main class="page">
+        <section class="card form-panel">
+            <span class="badge">Settings</span>
+            <h1>Edit Profile</h1>
+            <form th:action="@{/settings}" th:object="${profileForm}" method="post">
+                <div class="field">
+                    <label for="fullName">Full name</label>
+                    <input id="fullName" th:field="*{fullName}">
+                    <span class="error" th:errors="*{fullName}"></span>
+                </div>
+                <div class="field">
+                    <label for="university">University</label>
+                    <input id="university" th:field="*{university}">
+                </div>
+                <div class="field">
+                    <label for="major">Major</label>
+                    <input id="major" th:field="*{major}">
+                </div>
+                <div class="field">
+                    <label for="avatarUrl">Avatar URL</label>
+                    <input id="avatarUrl" th:field="*{avatarUrl}">
+                </div>
+                <div class="field">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" th:field="*{bio}"></textarea>
+                </div>
+                <button class="button" type="submit">Save profile</button>
+            </form>
+        </section>
+    </main>
+</div>
+</body>
+</html>

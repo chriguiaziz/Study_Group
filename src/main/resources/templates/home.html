@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('Home')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<main class="page wide-page">
+    <section class="hero">
+        <div>
+            <span class="badge green">Collaborative university learning</span>
+            <h1>StudyGroup</h1>
+            <p>Create focused study rooms, join classmates, share files and links, organize online or local sessions, and keep every discussion in one clean place.</p>
+            <div class="actions">
+                <a class="button" th:href="@{/groups}"><span data-lucide="users"></span>Explore groups</a>
+                <a class="button secondary" th:href="@{/groups/new}"><span data-lucide="plus"></span>Create a group</a>
+            </div>
+        </div>
+        <div class="hero-visual" aria-label="Students working together"></div>
+    </section>
+
+    <section class="grid">
+        <article class="card">
+            <span class="badge">MVC</span>
+            <h3>Clean Spring Boot Structure</h3>
+            <p class="muted">Controllers, services, repositories, entities, DTOs, configuration, and utilities are separated into clear layers.</p>
+        </article>
+        <article class="card">
+            <span class="badge green">OOP</span>
+            <h3>Object-Oriented Design</h3>
+            <p class="muted">Interfaces, abstract classes, inheritance, method overriding, method overloading, and encapsulated domain logic are used throughout.</p>
+        </article>
+        <article class="card">
+            <span class="badge orange">MySQL</span>
+            <h3>Relational Database</h3>
+            <p class="muted">Users, study groups, memberships, messages, resources, notifications, and categories are mapped with relationships.</p>
+        </article>
+    </section>
+
+    <section style="margin-top: 26px;">
+        <div class="toolbar">
+            <div class="page-title">
+                <h2>Featured Groups</h2>
+                <p>Fresh groups seeded for a quick demo.</p>
+            </div>
+            <a class="button secondary" th:href="@{/groups}">View all</a>
+        </div>
+        <div class="grid">
+            <article class="card group-card" th:each="group : ${featuredGroups}">
+                <span class="badge" th:text="${group.category.name}">Category</span>
+                <h3 th:text="${group.name}">Group name</h3>
+                <p th:text="${group.description}">Description</p>
+                <div class="actions">
+                    <span class="badge green" th:text="${group.priceLabel()}">Free</span>
+                    <a class="button secondary" th:href="@{/groups/{id}(id=${group.id})}">Open</a>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('Dashboard')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<div class="app-shell">
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+    <main class="page wide-page">
+        <section class="page-title">
+            <span class="badge green">Dashboard</span>
+            <h1 th:text="'Hello, ' + ${currentUser.fullName}">Hello</h1>
+            <p>Jump back into your groups, messages, resources, and notifications.</p>
+        </section>
+
+        <section class="grid">
+            <article class="card metric">
+                <div><span class="muted">Joined groups</span><strong th:text="${joinedGroups.size()}">0</strong></div>
+                <span data-lucide="users"></span>
+            </article>
+            <article class="card metric">
+                <div><span class="muted">Unread notifications</span><strong th:text="${unreadCount}">0</strong></div>
+                <span data-lucide="bell"></span>
+            </article>
+            <article class="card metric">
+                <div><span class="muted">Recent messages</span><strong th:text="${recentMessages.size()}">0</strong></div>
+                <span data-lucide="messages-square"></span>
+            </article>
+        </section>
+
+        <section class="split" style="margin-top: 22px;">
+            <div class="card">
+                <div class="toolbar">
+                    <h2>Your groups</h2>
+                    <a class="button secondary" th:href="@{/groups/new}">Create</a>
+                </div>
+                <div class="grid two" th:if="${!joinedGroups.isEmpty()}">
+                    <article class="card group-card" th:each="group : ${joinedGroups}">
+                        <span class="badge" th:text="${group.category.name}">Category</span>
+                        <h3 th:text="${group.name}">Group</h3>
+                        <p th:text="${group.description}">Description</p>
+                        <a class="button secondary" th:href="@{/groups/{id}(id=${group.id})}">Open group</a>
+                    </article>
+                </div>
+                <div class="empty-state" th:if="${joinedGroups.isEmpty()}">You have not joined a study group yet.</div>
+            </div>
+
+            <aside class="card">
+                <h2>Recent activity</h2>
+                <div th:each="message : ${recentMessages}" class="message">
+                    <span class="avatar" th:text="${message.sender.initials}">A</span>
+                    <div>
+                        <strong th:text="${message.sender.displayName}">Sender</strong>
+                        <p th:text="${message.content}">Message</p>
+                    </div>
+                </div>
+                <div class="empty-state" th:if="${recentMessages.isEmpty()}">No messages yet.</div>
+
+                <h2>Notifications</h2>
+                <div class="notification-row" th:each="notification : ${notifications}">
+                    <div>
+                        <strong th:text="${notification.title}">Title</strong>
+                        <p class="muted" th:text="${notification.body}">Body</p>
+                    </div>
+                    <span class="badge" th:text="${notification.type}">Type</span>
+                </div>
+            </aside>
+        </section>
+    </main>
+</div>
+</body>
+</html>

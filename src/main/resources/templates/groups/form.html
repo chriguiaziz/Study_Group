@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('Group Form')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<div class="app-shell">
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+    <main class="page">
+        <section class="card form-panel">
+            <span class="badge green" th:text="${groupId == null ? 'New group' : 'Edit group'}">New group</span>
+            <h1 th:text="${groupId == null ? 'Create Study Group' : 'Edit Study Group'}">Create Study Group</h1>
+            <form th:action="${groupId == null ? '/groups' : '/groups/' + groupId + '/edit'}" th:object="${groupForm}" method="post">
+                <div class="form-grid">
+                    <div class="field full">
+                        <label for="name">Group name</label>
+                        <input id="name" th:field="*{name}" placeholder="Graph Theory Sprint">
+                        <span class="error" th:errors="*{name}"></span>
+                    </div>
+                    <div class="field full">
+                        <label for="description">Description</label>
+                        <textarea id="description" th:field="*{description}" placeholder="What will students learn and do together?"></textarea>
+                        <span class="error" th:errors="*{description}"></span>
+                    </div>
+                    <div class="field">
+                        <label for="categoryId">Category</label>
+                        <select id="categoryId" th:field="*{categoryId}">
+                            <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Category</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="format">Format</label>
+                        <select id="format" th:field="*{format}">
+                            <option th:each="format : ${formats}" th:value="${format}" th:text="${format}">HYBRID</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="visibility">Visibility</label>
+                        <select id="visibility" th:field="*{visibility}">
+                            <option th:each="visibility : ${visibilities}" th:value="${visibility}" th:text="${visibility}">PUBLIC</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="capacity">Capacity</label>
+                        <input id="capacity" type="number" min="1" th:field="*{capacity}">
+                    </div>
+                    <div class="field">
+                        <label for="meetingLink">Online meeting link</label>
+                        <input id="meetingLink" th:field="*{meetingLink}" placeholder="Zoom or Meet link">
+                    </div>
+                    <div class="field">
+                        <label for="location">Local location</label>
+                        <input id="location" th:field="*{location}" placeholder="Library Room B2">
+                    </div>
+                    <div class="field checkbox-row">
+                        <input id="free" type="checkbox" th:field="*{free}" data-free-toggle>
+                        <label for="free">This group is free</label>
+                    </div>
+                    <div class="field" data-price-field>
+                        <label for="price">Price</label>
+                        <input id="price" type="number" step="0.01" min="0" th:field="*{price}">
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="button" type="submit">Save group</button>
+                    <a class="button secondary" th:href="@{/groups}">Cancel</a>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+</body>
+</html>

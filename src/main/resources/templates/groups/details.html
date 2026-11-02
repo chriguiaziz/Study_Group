@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head(${group.name})}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
+<div class="app-shell">
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+    <main class="page wide-page">
+        <section class="card">
+            <div class="toolbar">
+                <div class="page-title">
+                    <span class="badge" th:text="${group.category.name}">Category</span>
+                    <h1 th:text="${group.name}">Group</h1>
+                    <p th:text="${group.description}">Description</p>
+                </div>
+                <div class="actions">
+                    <form th:if="${currentUser != null and !isMember}" th:action="@{/groups/{id}/join(id=${group.id})}" method="post">
+                        <button class="button" type="submit">Join</button>
+                    </form>
+                    <form th:if="${currentUser != null and isMember and !isOwner}" th:action="@{/groups/{id}/leave(id=${group.id})}" method="post">
+                        <button class="button secondary" type="submit">Leave</button>
+                    </form>
+                    <a class="button secondary" th:href="@{/groups/{id}/chat(id=${group.id})}">Open chat</a>
+                    <a class="button secondary" th:if="${isOwner}" th:href="@{/groups/{id}/edit(id=${group.id})}">Edit</a>
+                    <form th:if="${isOwner}" th:action="@{/groups/{id}/delete(id=${group.id})}" method="post">
+                        <button class="button danger" type="submit">Delete</button>
+                    </form>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="card"><strong th:text="${group.format}">HYBRID</strong><p class="muted">Study format</p></div>
+                <div class="card"><strong th:text="${group.activeMemberCount} + '/' + ${group.capacity}">0/20</strong><p class="muted">Members</p></div>
+                <div class="card"><strong th:text="${group.priceLabel()}">Free</strong><p class="muted">Price</p></div>
+            </div>
+            <p class="muted" th:if="${group.meetingLink}">Online: <a th:href="${group.meetingLink}" th:text="${group.meetingLink}" target="_blank">link</a></p>
+            <p class="muted" th:if="${group.location}" th:text="'Location: ' + ${group.location}">Location</p>
+        </section>
+
+        <section class="split" style="margin-top: 20px;">
+            <div class="card">
+                <h2>Discussion Preview</h2>
+                <div class="message-list">
+                    <div class="message" th:each="message : ${messages}">
+                        <span class="avatar" th:text="${message.sender.initials}">A</span>
+                        <div>
+                            <strong th:text="${message.sender.displayName}">Name</strong>
+                            <p th:text="${message.content}">Message</p>
+                        </div>
+                    </div>
+                    <div class="empty-state" th:if="${messages.isEmpty()}">No messages yet.</div>
+                </div>
+            </div>
+            <aside class="card">
+                <h2>Resources</h2>
+                <div class="resource-row" th:each="resource : ${resources}">
+                    <div>
+                        <strong th:text="${resource.title}">Resource</strong>
+                        <p class="muted" th:text="${resource.description}">Description</p>
+                        <a class="badge" th:href="${resource.resourceType.name() == 'LINK' ? resource.accessLabel : '#'}" th:text="${resource.accessLabel}" target="_blank">Open</a>
+                    </div>
+                    <span class="badge green" th:text="${resource.resourceType}">LINK</span>
+                </div>
+                <div class="empty-state" th:if="${resources.isEmpty()}">No resources yet.</div>
+
+                <form th:if="${currentUser != null}" th:action="@{/groups/{id}/resources(id=${group.id})}" th:object="${resourceForm}" method="post">
+                    <h3>Share resource</h3>
+                    <div class="field">
+                        <label for="resourceType">Type</label>
+                        <select id="resourceType" th:field="*{resourceType}" data-resource-type>
+                            <option value="LINK">Link</option>
+                            <option value="FILE">File reference</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="title">Title</label>
+                        <input id="title" th:field="*{title}">
+                    </div>
+                    <div class="field">
+                        <label for="resDescription">Description</label>
+                        <textarea id="resDescription" th:field="*{description}"></textarea>
+                    </div>
+                    <div class="field" data-resource-link>
+                        <label for="url">URL</label>
+                        <input id="url" th:field="*{url}">
+                    </div>
+                    <div class="field" data-resource-file>
+                        <label for="fileName">File name</label>
+                        <input id="fileName" th:field="*{fileName}">
+                    </div>
+                    <div class="field" data-resource-file>
+                        <label for="storagePath">Local path or note</label>
+                        <input id="storagePath" th:field="*{storagePath}">
+                    </div>
+                    <button class="button" type="submit">Share</button>
+                </form>
+            </aside>
+        </section>
+    </main>
+</div>
+</body>
+</html>
